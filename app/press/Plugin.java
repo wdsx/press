@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+import play.Play;
 import play.PlayPlugin;
 import play.mvc.Router;
 import press.io.FileIO;
@@ -240,7 +241,7 @@ public class Plugin extends PlayPlugin {
      * tags within the HTML.
      */
     private static String getScriptTag(String src) {
-        return "<script src=\"" + press.PluginConfig.contentHostingDomain + src
+    	return "<script src=\"" + press.PluginConfig.contentHostingDomain + Router.reverseWithCheck(src, Play.getVirtualFile(src), false)
                 + "\" type=\"text/javascript\" language=\"javascript\" charset=\"utf-8\">"
                 + "</script>\n";
     }
@@ -250,7 +251,8 @@ public class Plugin extends PlayPlugin {
      * within the HTML.
      */
     private static String getLinkTag(String src) {
-        return "<link href=\"" + press.PluginConfig.contentHostingDomain + src + "\" rel=\"stylesheet\" type=\"text/css\" charset=\"utf-8\">"
+        return "<link href=\"" + press.PluginConfig.contentHostingDomain + Router.reverseWithCheck(src, Play.getVirtualFile(src), false) 
+        		+ "\" rel=\"stylesheet\" type=\"text/css\" charset=\"utf-8\">"
                 + (press.PluginConfig.htmlCompatible ? "" : "</link>") + "\n";
     }
 }
